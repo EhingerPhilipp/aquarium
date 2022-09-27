@@ -64,10 +64,11 @@ namespace aquarium
                 Fish fish = Fishes[f];
                 int x = fish.PosX;
                 string shape = fish.Shape;
+                
+                //turn the fish around for nicer looks
                 if (fish.Direction == "right")
                 {
                     x -= shape.Length - 1;
-
                     shape = fish.ShapeReverse;
                 }
 
@@ -79,8 +80,10 @@ namespace aquarium
                     {
                         handleCollision(fish, x, fish.PosY);                     
                         f = 0;
+                        //important to break before drawing another character into the array, this leads to unwanted bugs (and many tears while debugging)
                         break;
                     }
+
                     Content[fish.PosY, x] = Char.ToString(c);                  
                     x++;
                 }
@@ -118,8 +121,22 @@ namespace aquarium
             Fishes.Add(new Carp(70, 4));                              
             Fishes.Add(new Carp(80, 4));                              
             Fishes.Add(new Shark(60, 2));
-            Fishes.Add(new Blowfish(5, 15));
-            Fishes.Add(new Swordfish(60, 15));
+            Fishes.Add(new Shark(70, 2));
+            Fishes.Add(new Blowfish(10, 15));
+            Fishes.Add(new Blowfish(20, 15));
+            Fishes.Add(new Blowfish(30, 15));
+            Fishes.Add(new Blowfish(40, 15));
+            Fishes.Add(new Blowfish(50, 15));
+            Fishes.Add(new Blowfish(60, 15));
+            Fishes.Add(new Blowfish(70, 15));
+            Fishes.Add(new Blowfish(80, 15));
+            Fishes.Add(new Swordfish(10, 10));
+            Fishes.Add(new Swordfish(20, 10));
+            Fishes.Add(new Swordfish(30, 10));
+            Fishes.Add(new Swordfish(40, 10));
+            Fishes.Add(new Swordfish(50, 10));
+            Fishes.Add(new Swordfish(60, 10));
+            Fishes.Add(new Swordfish(70, 10));
         }
 
         public void Swim()
@@ -152,14 +169,23 @@ namespace aquarium
                 xLeft--;
                 xRight++;
             }
-            if(fish.Shape.Length >= collidingFish.Shape.Length)
+
+            //there is always a bigger fish, so remove the smaller ones
+            if (fish.GetType().Name == collidingFish.GetType().Name)
+            {
+                Type fishType = fish.GetType();
+                Fish newFish = (Fish)Activator.CreateInstance(fishType, 20, 20);
+                Fishes.Add(newFish);
+            }
+            else if(fish.Shape.Length >= collidingFish.Shape.Length)
             {
                 Fishes.Remove(collidingFish);
             } else
             {
                 Fishes.Remove(fish);
-
             }
+
+            //clear aquarium
             PrepareAquarium();
         }
     }

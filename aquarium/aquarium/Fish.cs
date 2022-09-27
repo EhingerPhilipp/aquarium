@@ -17,7 +17,7 @@ namespace aquarium
         public int DirectionChangeProbability { get; set; }
         public int Speed { get; set; }
 
-        public void Swim(Aquarium aquarium)
+        public virtual void Swim(Aquarium aquarium)
         {
             //see of the fishe changes depth or direction
             ChangeDirection(aquarium, DirectionChangeProbability);
@@ -45,8 +45,7 @@ namespace aquarium
                 else
                 {//normal swimming
                     PosX += Speed;
-
-                }
+               }
             }
         }
         public void ChangeDirection(Aquarium aquarium, int probability)
