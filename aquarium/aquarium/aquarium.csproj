@@ -50,6 +50,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shark.cs" />
+    <Compile Include="Stingray.cs" />
     <Compile Include="Swordfish.cs" />
   </ItemGroup>
   <ItemGroup>

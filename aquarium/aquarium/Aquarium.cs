@@ -137,6 +137,7 @@ namespace aquarium
             Fishes.Add(new Swordfish(50, 10));
             Fishes.Add(new Swordfish(60, 10));
             Fishes.Add(new Swordfish(70, 10));
+            Fishes.Add(new Stingray(50, 8));
         }
 
         public void Swim()
@@ -170,14 +171,19 @@ namespace aquarium
                 xRight++;
             }
 
-            //there is always a bigger fish, so remove the smaller ones
-            if (fish.GetType().Name == collidingFish.GetType().Name)
+            //mantas only stun bot dont eat 
+            if(fish.GetType().Name == "Stingray")
             {
-                Type fishType = fish.GetType();
-                Fish newFish = (Fish)Activator.CreateInstance(fishType, 20, 20);
-                Fishes.Add(newFish);
+                collidingFish.Speed = 0;
+                collidingFish.PosY += 1;
             }
-            else if(fish.Shape.Length >= collidingFish.Shape.Length)
+            else if (collidingFish.GetType().Name == "Stingray")
+            {
+                fish.Speed = 0;
+                fish.PosY += 1;
+            }
+            //there is always a bigger fish, so remove the smaller ones
+            else if (fish.Shape.Length >= collidingFish.Shape.Length)
             {
                 Fishes.Remove(collidingFish);
             } else
