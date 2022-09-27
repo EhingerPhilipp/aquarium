@@ -171,7 +171,7 @@ namespace aquarium
                 xRight++;
             }
 
-            //mantas only stun bot dont eat 
+            //mantas only stun but don't eat 
             if(fish.GetType().Name == "Stingray")
             {
                 collidingFish.Speed = 0;
