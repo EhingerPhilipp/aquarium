@@ -25,26 +25,26 @@ namespace aquarium
             //do actual swimming
             if (Direction == "left")
             {
-                if (Shape.Length >= PosY - Speed)
+                if (Shape.Length >= PosX - Speed)
                 {//avoid walls
                     Direction = "right";
-                    PosY = Shape.Length;
+                    PosX = Shape.Length;
                 }
                 else
                 {//normal swimming
-                    PosY -= Speed;
+                    PosX -= Speed;
                 }
             }
             else
             {
-                if (Shape.Length >= (aquarium.Content.GetLength(1) - PosY + Speed))
+                if (Shape.Length >= (aquarium.Content.GetLength(1) - PosX + Speed))
                 {//avoid walls
                     Direction = "left";
-                    PosY = aquarium.Content.GetLength(1) -1 - Shape.Length;
+                    PosX = aquarium.Content.GetLength(1) -1 - Shape.Length;
                 }
                 else
                 {//normal swimming
-                    PosY += Speed;
+                    PosX += Speed;
 
                 }
             }
@@ -56,12 +56,12 @@ namespace aquarium
                 if (Direction == "left")
                 {
                     Direction = "right";
-                    PosY += Shape.Length;
+                    PosX += Shape.Length;
                 }
                 else
                 {
                     Direction = "left";
-                    PosY -= Shape.Length;
+                    PosX -= Shape.Length;
                 }
             }
         }
@@ -69,13 +69,13 @@ namespace aquarium
         {
             if (aquarium.Random.Next(0, probability) == 1)
             {
-                if (aquarium.Random.Next(0, 2) == 1 && PosX - 1 >= 0)
+                if (aquarium.Random.Next(0, 2) == 1 && PosY - 1 >= 0)
                 {
-                    PosX -= 1;
+                    PosY -= 1;
                 }
-                else if (PosX + 1 < aquarium.Content.GetLength(0) - 1)
+                else if (PosY + 1 < aquarium.Content.GetLength(0) - 1)
                 {
-                    PosX += 1;
+                    PosY += 1;
                 }
             }
         }

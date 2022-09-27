@@ -24,10 +24,21 @@ namespace aquarium
 
         public void RenderAquarium()
         {   //draw empty aquarium
+            PrepareAquarium();
+
+            //render the fishes
+            PrepareFishes();
+
+            //print on console
+            PrintAquarium();
+        }
+
+        public void PrepareAquarium()
+        {
             for (int j = 0; j < Content.GetLength(0); j++)
             {
                 for (int i = 0; i < Content.GetLength(1); i++)
-                {  
+                {
                     Content[j, i] = "~";
 
                     if (j == Content.GetLength(0) - 1 && (i == Content.GetLength(1) - 1 || i == 0))
@@ -44,28 +55,36 @@ namespace aquarium
                     }
                 }
             }
-            //render the fishes
-            foreach (Fish fish in Fishes)
+        }
+
+        public void PrepareFishes()
+        {
+            for (int f = 0; f < Fishes.Count; f++)
             {
-                int y = fish.PosY;
+                Fish fish = Fishes[f];
+                int x = fish.PosX;
                 string shape = fish.Shape;
                 if (fish.Direction == "right")
                 {
-                    y -= shape.Length - 1;
-                    
+                    x -= shape.Length - 1;
+
                     shape = fish.ShapeReverse;
                 }
-                
+
 
                 foreach (char c in shape)
                 {
-                    Content[fish.PosX, y] = Char.ToString(c);
-                    y++;
+                    //check if fish is in the way
+                    if (Content[fish.PosY, x] != "~")
+                    {
+                        handleCollision(fish, x, fish.PosY);                     
+                        f = 0;
+                        break;
+                    }
+                    Content[fish.PosY, x] = Char.ToString(c);                  
+                    x++;
                 }
             }
-
-            //print on console
-            PrintAquarium();
         }
 
         private void PrintAquarium()
@@ -90,11 +109,17 @@ namespace aquarium
 
         public void AddFish()
         {
-            Fishes.Add(new Carp(4, 5));
-            
-            Fishes.Add(new Shark(6, 19));
-            Fishes.Add(new Blowfish(8, 15));
-            Fishes.Add(new Swordfish(3, 15));
+            Fishes.Add(new Carp(5, 2));                              
+            Fishes.Add(new Carp(20, 4));                              
+            Fishes.Add(new Carp(30, 4));                              
+            Fishes.Add(new Carp(40, 4));                              
+            Fishes.Add(new Carp(50, 4));                              
+            Fishes.Add(new Carp(60, 4));                              
+            Fishes.Add(new Carp(70, 4));                              
+            Fishes.Add(new Carp(80, 4));                              
+            Fishes.Add(new Shark(60, 2));
+            Fishes.Add(new Blowfish(5, 15));
+            Fishes.Add(new Swordfish(60, 15));
         }
 
         public void Swim()
@@ -103,6 +128,39 @@ namespace aquarium
             {
                 fish.Swim(this);
             }
+        }
+        
+        public void handleCollision(Fish fish, int x, int y)
+        {
+            //there be dragons
+            //find me the next fish
+            Fish collidingFish = null;
+            int xLeft = x;
+            int xRight = x;
+
+            while (collidingFish == null)
+            {
+                foreach (Fish potentialFish in Fishes.Where(w => w.PosY == fish.PosY).Select(s => s).ToList())
+                {
+
+                    if ((potentialFish.PosY == y) && (potentialFish.PosX == xLeft || potentialFish.PosX == xRight) && potentialFish != fish)
+                    {
+                        collidingFish = potentialFish;
+                        break;
+                    }
+                }
+                xLeft--;
+                xRight++;
+            }
+            if(fish.Shape.Length >= collidingFish.Shape.Length)
+            {
+                Fishes.Remove(collidingFish);
+            } else
+            {
+                Fishes.Remove(fish);
+
+            }
+            PrepareAquarium();
         }
     }
 }
